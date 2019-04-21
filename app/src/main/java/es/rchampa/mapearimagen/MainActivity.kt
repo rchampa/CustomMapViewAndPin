@@ -3,19 +3,23 @@ package es.rchampa.mapearimagen
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.activity_main.*
+import android.widget.LinearLayout
+import kotlinx.android.synthetic.main.bottom_sheet.*
+import kotlinx.android.synthetic.main.mycontent.*
 
 
-const val HEIGHT = 200
-const val WIDTH = 200
+const val HEIGHT = 100
+const val WIDTH = 100
 
 class MainActivity : AppCompatActivity(), TouchImageView.OnTouchPositionListener {
 
     lateinit var newView: ImageView
+    private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
 
     override fun onPosition(x: Float, y: Float) {
 //        Toast.makeText(this,"Posicion: x=$x  y=$y",Toast.LENGTH_LONG).show()
@@ -28,8 +32,20 @@ class MainActivity : AppCompatActivity(), TouchImageView.OnTouchPositionListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bottom_sheet)
+
+
         supportActionBar?.hide()
-//        iv_cementerio.setPositionListener(this)
+
+
+        bt_expand.setOnClickListener {
+            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        bt_half_expand.setOnClickListener{
+            sheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
+
 
         iv_cementerio.setOnTouchListener{ view, event ->
             val x = event.x.toInt()
@@ -146,6 +162,5 @@ class MainActivity : AppCompatActivity(), TouchImageView.OnTouchPositionListener
         newView.x = x - (WIDTH/2)
         newView.y = y - (HEIGHT/2)
         newView.setImageResource(R.drawable.globo)
-//        newView.setBackgroundColor(Color.MAGENTA)
     }
 }
